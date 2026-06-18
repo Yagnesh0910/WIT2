@@ -45,6 +45,37 @@ const departmentSectionGroups = [
   ]]
 ];
 
+const examinationGroup = [
+  "Examination", [
+    ["WIT Exam rule book", "assets/documents/academics/examination/WIT-Exam-Rule-Book-18-5-26-for-web-site.pdf"],
+    ["Discontinuation of carry on scheme", "assets/documents/academics/examination/Carry-on-Schem-Notice.pdf"],
+    ["Implementation of Re-examination", "assets/documents/academics/examination/Condut-of-Reexamination-Notice.pdf"],
+    ["2025-26(May-2026)", "pages/timetable.html?session=2025-26(May-2026)"],
+    ["2025-26(Nov-2025)", "pages/timetable.html?session=2025-26(Nov-2025)"],
+    ["2024-25(May-2025)", "pages/timetable.html?session=2024-25(May-2025)"],
+    ["2024-25(Nov-2024)", "pages/timetable.html?session=2024-25(Nov-2024)"],
+    ["2023-24", "pages/timetable.html?session=2023-24"]
+  ]
+];
+
+const elearningGroup = [
+  "E-Learning", [
+    ["NPTEL WIT LOCAL CHAPTER", "https://nptel.ac.in/localchapter/statistics/863"],
+    ["Professional Learning Community (Video PEER Review Form)", "https://docs.google.com/forms/d/e/1FAIpQLSeSjlrlk41gIwH8m2YsW3gv5FrLXVd_K8bOmutfRWsVGXsBHA/viewform"],
+    ["LMS", "pages/lms.html"]
+  ]
+];
+
+const accreditationGroup = [
+  "Accreditation", [
+    ["IQAC", "pages/iqac.html"],
+    ["NAAC", "pages/naac.html"],
+    ["NBA", "pages/nba.html"],
+    ["NIRF", "pages/nirf.html"],
+    ["ARIIA", "pages/ariia.html"]
+  ]
+];
+
 const menus = {
   about: {
     label: "About",
@@ -62,7 +93,11 @@ const menus = {
       ["Leadership & Reports", [
         ["Secretary Desk", "pages/secretary-desk.html"],
         ["Principal Desk", "pages/principal-desk.html"],
-        "Organization Chart", "Institute Development Plan", "Annual Reports", "Mandatory Disclosure", "RTI"
+        ["Organization Chart", "assets/documents/about_institute/Organization-Structure-of-WIT.pdf"],
+        ["Institute Development Plan", "assets/documents/about_institute/Institute Development Plan.pdf"],
+        ["Annual Reports", "pages/annual-reports.html"],
+        ["Mandatory Disclosure", "assets/documents/about_institute/Mandatory-Disclosure_May-2025.pdf"],
+        ["RTI", "assets/documents/about_institute/RTI.pdf"]
       ]]
     ]
   },
@@ -70,7 +105,16 @@ const menus = {
     label: "Academics",
     headline: "Departments, programmes, academic resources, accreditation, and innovation.",
     groups: [
-      ["Academic Links", ["Departments", ["Academic Calendar", "pages/academic-calendar.html"], "Examination", "E-Learning", "Programmes Offered", "Accreditation", "Best Practices", "Innovation & IPR"]],
+      ["Academic Links", [
+        ["Departments", "#academics-departments"],
+        ["Academic Calendar", "pages/academic-calendar.html"],
+        ["Examination", "#academics-examination"],
+        ["E-Learning", "#academics-elearning"],
+        "Programmes Offered",
+        ["Accreditation", "#academics-accreditation"],
+        "Best Practices",
+        "Innovation & IPR"
+      ]],
       ["Departments", [
         ["Computer Science & Engineering", "cse"],
         ["Information Technology", "it"],
@@ -95,8 +139,19 @@ const menus = {
     label: "Research",
     headline: "Research, innovation, quality assurance, rankings, approvals, and proceedings.",
     groups: [
-      ["Research Ecosystem", ["Research Overview", "Innovation Entrepreneurship & IPR", "IQAC", "NAAC", "NBA"]],
-      ["Approvals & Rankings", ["NIRF", "ARIIA", "AICTE Approvals", "Conference Proceedings"]]
+      ["Research Ecosystem", [
+        "Research Overview", 
+        "Innovation Entrepreneurship & IPR", 
+        ["IQAC", "pages/iqac.html"], 
+        ["NAAC", "pages/naac.html"], 
+        ["NBA", "pages/nba.html"]
+      ]],
+      ["Approvals & Rankings", [
+        ["NIRF", "pages/nirf.html"], 
+        ["ARIIA", "pages/ariia.html"], 
+        "AICTE Approvals", 
+        "Conference Proceedings"
+      ]]
     ]
   },
   campus: {
@@ -111,7 +166,12 @@ const menus = {
     label: "Examination",
     headline: "Exam rules, re-examination rules, carry-on scheme, and exam sections.",
     groups: [
-      ["Exam Cell", ["Exam Rule Book", "Re-Examination Rules", "Carry On Scheme", "Academic Year Exam Sections"]]
+      ["Exam Cell", [
+        ["Exam Rule Book", "assets/documents/academics/examination/WIT-Exam-Rule-Book-18-5-26-for-web-site.pdf"],
+        ["Re-Examination Rules", "assets/documents/academics/examination/Condut-of-Reexamination-Notice.pdf"],
+        ["Carry On Scheme", "assets/documents/academics/examination/Carry-on-Schem-Notice.pdf"],
+        "Academic Year Exam Sections"
+      ]]
     ]
   },
   contact: {
@@ -164,7 +224,7 @@ function createMenuLinks(items) {
       label = item;
     }
 
-    const targetAttr = href.endsWith(".pdf") ? ' target="_blank" rel="noopener"' : '';
+    const targetAttr = href.endsWith(".pdf") || href.startsWith("http") || href.startsWith("https") ? ' target="_blank" rel="noopener"' : '';
     return `<a href="${href}"${targetAttr}>${label}</a>`;
   }).join("");
 }
@@ -181,6 +241,14 @@ function renderMegaMenu(key) {
   `).join("");
 
   megaMenu.innerHTML = `<div class="mega-inner"><div class="mega-groups">${groups}</div></div>`;
+
+  // Highlight the default subtab for academics
+  if (key === "academics") {
+    const defaultSubtab = megaMenu.querySelector('a[href="#academics-departments"]');
+    if (defaultSubtab) {
+      defaultSubtab.classList.add("subtab-active");
+    }
+  }
 }
 
 function openMegaMenu(key, trigger) {
@@ -201,12 +269,56 @@ function closeMegaMenu() {
 function buildMobilePanels() {
   document.querySelectorAll(".menu-trigger").forEach((trigger) => {
     const menu = menus[trigger.dataset.menu];
+    if (!menu) return;
     const panel = document.createElement("div");
     panel.className = "mobile-panel";
 
-    menu.groups.forEach(([, items]) => {
-      panel.insertAdjacentHTML("beforeend", createMenuLinks(items));
-    });
+    if (trigger.dataset.menu === "academics") {
+      // Create specific layout for Academics on mobile
+      const academicLinks = menu.groups[0][1].filter(item => {
+        const label = Array.isArray(item) ? item[0] : item;
+        return label !== "Departments" && label !== "Examination" && label !== "E-Learning" && label !== "Accreditation";
+      });
+
+      // Add Academic Links
+      panel.insertAdjacentHTML("beforeend", createMenuLinks(academicLinks));
+
+      // Add Departments toggle and its sub-panel
+      panel.insertAdjacentHTML("beforeend", `<a href="#mobile-academics-departments" class="mobile-subtab-trigger">Departments</a>`);
+      panel.insertAdjacentHTML("beforeend", `
+        <div id="mobile-academics-departments" class="mobile-sub-panel" style="display: none;">
+          ${createMenuLinks(menu.groups[1][1])}
+        </div>
+      `);
+
+      // Add Examination toggle and its sub-panel
+      panel.insertAdjacentHTML("beforeend", `<a href="#mobile-academics-examination" class="mobile-subtab-trigger">Examination</a>`);
+      panel.insertAdjacentHTML("beforeend", `
+        <div id="mobile-academics-examination" class="mobile-sub-panel" style="display: none;">
+          ${createMenuLinks(examinationGroup[1])}
+        </div>
+      `);
+
+      // Add E-Learning toggle and its sub-panel
+      panel.insertAdjacentHTML("beforeend", `<a href="#mobile-academics-elearning" class="mobile-subtab-trigger">E-Learning</a>`);
+      panel.insertAdjacentHTML("beforeend", `
+        <div id="mobile-academics-elearning" class="mobile-sub-panel" style="display: none;">
+          ${createMenuLinks(elearningGroup[1])}
+        </div>
+      `);
+
+      // Add Accreditation toggle and its sub-panel
+      panel.insertAdjacentHTML("beforeend", `<a href="#mobile-academics-accreditation" class="mobile-subtab-trigger">Accreditation</a>`);
+      panel.insertAdjacentHTML("beforeend", `
+        <div id="mobile-academics-accreditation" class="mobile-sub-panel" style="display: none;">
+          ${createMenuLinks(accreditationGroup[1])}
+        </div>
+      `);
+    } else {
+      menu.groups.forEach(([, items]) => {
+        panel.insertAdjacentHTML("beforeend", createMenuLinks(items));
+      });
+    }
 
     trigger.closest("li").appendChild(panel);
   });
@@ -294,6 +406,10 @@ function typeHeroTitle() {
     } else {
       window.setTimeout(() => {
         subtitleEl.textContent = subtitle;
+        const accreditationsEl = document.querySelector(".hero-accreditations");
+        if (accreditationsEl) {
+          accreditationsEl.classList.add("revealed");
+        }
       }, 300);
     }
   }
@@ -368,6 +484,64 @@ document.addEventListener("click", (event) => {
   const link = event.target.closest("a");
 
   if (link) {
+    const href = link.getAttribute("href");
+
+    // 1. Desktop subtabs toggle in Academics
+    if (href === "#academics-departments" || href === "#academics-examination" || href === "#academics-elearning" || href === "#academics-accreditation") {
+      event.preventDefault();
+
+      // Toggle active styling on left links
+      const parentList = link.closest(".mega-group");
+      if (parentList) {
+        parentList.querySelectorAll("a").forEach(a => a.classList.remove("subtab-active"));
+        link.classList.add("subtab-active");
+      }
+
+      // Update right column content
+      const megaGroups = document.querySelector(".mega-groups");
+      if (megaGroups) {
+        const rightGroup = megaGroups.children[1];
+        if (rightGroup) {
+          if (href === "#academics-departments") {
+            rightGroup.innerHTML = `
+              <h4>Departments</h4>
+              ${createMenuLinks(menus.academics.groups[1][1])}
+            `;
+          } else if (href === "#academics-examination") {
+            rightGroup.innerHTML = `
+              <h4>Examination</h4>
+              ${createMenuLinks(examinationGroup[1])}
+            `;
+          } else if (href === "#academics-elearning") {
+            rightGroup.innerHTML = `
+              <h4>E-Learning</h4>
+              ${createMenuLinks(elearningGroup[1])}
+            `;
+          } else if (href === "#academics-accreditation") {
+            rightGroup.innerHTML = `
+              <h4>Accreditation</h4>
+              ${createMenuLinks(accreditationGroup[1])}
+            `;
+          }
+        }
+      }
+      return;
+    }
+
+    // 2. Mobile subtabs toggle in Academics
+    if (link.classList.contains("mobile-subtab-trigger")) {
+      event.preventDefault();
+      const targetId = href;
+      const targetPanel = document.querySelector(targetId);
+      if (targetPanel) {
+        const isVisible = targetPanel.style.display !== "none";
+        targetPanel.style.display = isVisible ? "none" : "grid";
+        link.classList.toggle("subtab-active", !isVisible);
+      }
+      return;
+    }
+
+    // Standard megamenu and navigation close logic
     if (event.target.closest(".mega-menu")) {
       closeMegaMenu();
     }
@@ -395,7 +569,12 @@ if (menuToggle) {
 }
 megaMenu.addEventListener("mouseleave", closeMegaMenu);
 megaMenu.addEventListener("click", (event) => {
-  if (event.target.closest("a")) closeMegaMenu();
+  const link = event.target.closest("a");
+  if (link) {
+    const href = link.getAttribute("href");
+    if (href && href.startsWith("#")) return;
+    closeMegaMenu();
+  }
 });
 header.addEventListener("mouseleave", closeMegaMenu);
 window.addEventListener("scroll", updateHeader, { passive: true });
@@ -414,7 +593,13 @@ if (yearEl) {
 setupAnnouncements();
 buildMobilePanels();
 updateHeader();
-typeHeroTitle();
+let heroAnimationStarted = false;
+function startHeroAnimation() {
+  if (heroAnimationStarted) return;
+  heroAnimationStarted = true;
+  typeHeroTitle();
+}
+
 setupRevealAnimations();
 initHomeMarquees();
 
@@ -422,7 +607,10 @@ function setupFirstVisitPopup() {
   const modal = document.querySelector("#firstVisitModal");
   const closeBtn = document.querySelector("#firstVisitClose");
 
-  if (!modal || !closeBtn) return;
+  if (!modal || !closeBtn) {
+    startHeroAnimation();
+    return;
+  }
 
   window.addEventListener("load", () => {
     modal.hidden = false;
@@ -432,6 +620,7 @@ function setupFirstVisitPopup() {
   function closeModal() {
     modal.hidden = true;
     document.body.classList.remove("modal-open");
+    startHeroAnimation();
   }
 
   closeBtn.addEventListener("click", closeModal);

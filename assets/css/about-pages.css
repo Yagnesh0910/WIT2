@@ -508,4 +508,29 @@ body.about-page {
   }
 }
 
+@media (max-width: 768px) {
+  .about-table th {
+    padding: 12px 14px;
+    font-size: 0.85rem;
+  }
+  .about-table td {
+    padding: 12px 14px;
+    font-size: 0.85rem;
+  }
+  .tab-button {
+    padding: 8px 18px;
+    font-size: 0.85rem;
+  }
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+  .page-header p.subtitle {
+    font-size: 0.95rem;
+  }
+  .page-header::after {
+    margin-top: 14px;
+  }
+}
+
+
 

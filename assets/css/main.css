@@ -753,6 +753,30 @@ body.modal-open {
   transform: translateX(3px);
 }
 
+/* Sub-tab Highlights (Desktop & Mobile) */
+.mega-group a.subtab-active,
+.mobile-panel a.mobile-subtab-trigger.subtab-active {
+  color: var(--secondary-royal);
+  background: rgba(56, 189, 248, 0.12);
+  font-weight: 600;
+}
+
+.mega-group a.subtab-active::before,
+.mobile-panel a.mobile-subtab-trigger.subtab-active::before {
+  background: var(--secondary-royal);
+  box-shadow: 0 0 12px var(--secondary-royal);
+}
+
+/* Mobile nested sub-panels */
+.mobile-sub-panel {
+  display: grid;
+  gap: 10px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  padding-left: 16px;
+  border-left: 2px solid rgba(56, 189, 248, 0.2);
+}
+
 .mobile-panel {
   display: none;
   gap: 10px;
@@ -842,9 +866,12 @@ body.modal-open {
   max-width: none;
   opacity: 0;
   transform: translateY(26px);
-  animation: revealAccreditations 700ms ease forwards;
-  animation-delay: 3.3s;
   overflow: visible;
+}
+
+.hero-accreditations.revealed {
+  animation: revealAccreditations 700ms ease forwards;
+  animation-delay: 0.2s;
 }
 
 @keyframes revealAccreditations {
