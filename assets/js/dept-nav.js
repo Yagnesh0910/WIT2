@@ -5,7 +5,8 @@ const DEPT_TITLES = {
   ecs: "Electronics & Computer Engineering",
   me: "Mechanical Engineering",
   it: "Information Technology",
-  aiml: "Artificial Intelligence & Machine Learning"
+  aiml: "Artificial Intelligence & Machine Learning",
+  ge: "General Engineering"
 };
 
 const DEPT_NAV_LINKS = [

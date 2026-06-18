@@ -4,50 +4,51 @@
    ═══════════════════════════════════════════════════════════════ */
 
 :root {
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
-  --text-on-dark: #ffffff;
-  --surface: #ffffff;
-  --surface-soft: #EFF6FF;
-  --border: #BFDBFE;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #64748B;
+    --text-on-dark: #FFFFFF;
+    --surface: #FFFFFF;
+    --surface-soft: #F8FCFF;
+    --border: #BFDBFE;
 
-  /* Default palette (CSE) - Redesigned Sky Blue Academic with Tech Gradients */
-  --dept-primary: #38BDF8;      /* Primary: Sky Blue */
-  --dept-secondary: #2563EB;    /* Secondary: Royal Blue */
-  --dept-accent: #0F4C81;       /* Accent: Deep Academic Blue */
-  --dept-accent-2: #F59E0B;     /* Accent 2: Gold */
-  --dept-light: #EFF6FF;
-  --dept-dark: #0F172A;         /* Dark Slate for modern shell elements */
-  --dept-glow: rgba(56, 189, 248, 0.15);
+    /* Default palette (CSE) */
+    --dept-primary: #2563EB;
+    --dept-secondary: #38BDF8;
+    --dept-accent: #F59E0B;
+    --dept-accent-2: #10B981;
+    --dept-light: #EAF6FF;
+    --dept-dark: #0F4C81;
+    --dept-glow: rgba(37, 99, 235, 0.15);
 
-  /* Legacy aliases */
-  --branch-blue: var(--dept-primary);
-  --branch-sky: var(--dept-secondary);
-  --branch-yellow: var(--dept-accent-2);
-  --branch-light: var(--dept-light);
-  --branch-dark: var(--dept-dark);
-  --branch-soft: var(--dept-light);
+    /* Legacy aliases */
+    --branch-blue: var(--dept-primary);
+    --branch-sky: var(--dept-secondary);
+    --branch-yellow: var(--dept-accent);
+    --branch-light: var(--dept-light);
+    --branch-dark: var(--dept-dark);
+    --branch-soft: var(--dept-light);
 
-  --dept-sidebar-width: 260px;
-  --dept-sidebar-collapsed: 76px;
+    --dept-sidebar-width: 260px;
+    --dept-sidebar-collapsed: 76px;
 }
 
-/* ─── Per-department color themes - Unified Sky Blue Theme! */
+/* ─── Per-department color themes ─── */
 [data-department="cse"],
 [data-department="ce"],
 [data-department="entc"],
 [data-department="ecs"],
 [data-department="me"],
 [data-department="it"],
-[data-department="aiml"] {
-  --dept-primary: #38BDF8;
-  --dept-secondary: #2563EB;
-  --dept-accent: #0F4C81;
-  --dept-accent-2: #F59E0B;
-  --dept-light: #EFF6FF;
-  --dept-dark: #0F172A;
-  --dept-glow: rgba(56, 189, 248, 0.15);
+[data-department="aiml"],
+[data-department="ge"] {
+    --dept-primary: #2563EB;
+    --dept-secondary: #38BDF8;
+    --dept-accent: #F59E0B;
+    --dept-accent-2: #10B981;
+    --dept-light: #EAF6FF;
+    --dept-dark: #0F4C81;
+    --dept-glow: rgba(37, 99, 235, 0.15);
 }
 
 /* ─── Page shell ─── */
@@ -56,10 +57,8 @@ body.dept-page {
     padding-left: var(--dept-sidebar-width);
     color: var(--text-primary);
     background:
-        radial-gradient(ellipse 80% 50% at 5% 0%, var(--dept-glow) 0%, transparent 55%),
-        radial-gradient(ellipse 60% 40% at 95% 5%, rgba(56, 189, 248, 0.12) 0%, transparent 50%),
-        radial-gradient(ellipse 70% 50% at 50% 100%, rgba(56, 189, 248, 0.18) 0%, transparent 55%),
-        linear-gradient(165deg, var(--bg-main) 0%, var(--bg-alt) 40%, #ffffff 100%);
+        linear-gradient(rgba(248, 252, 255, 0.94), rgba(248, 252, 255, 0.96)),
+        url("../images/campus/campus-bg.png") center top / cover fixed;
     transition: padding-left 0.3s ease;
 }
 
@@ -75,33 +74,27 @@ body.dept-page.menu-open {
     overflow: hidden;
 }
 
+.dept-page .site-header--dept {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
 .dept-page .site-header--dept .navbar {
     grid-template-columns: auto 1fr auto;
 }
 
-/* Subpage navbar overrides to ensure buttons/links are visible by default on light backgrounds */
-.site-header--dept .navbar {
-    background: var(--white);
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: var(--shadow);
+.dept-page .site-header--dept .nav-link {
+    color: var(--text-secondary);
 }
 
-.site-header--dept .nav-link {
-    color: #000000;
+.dept-page .site-header--dept .nav-link:hover,
+.dept-page .site-header--dept .nav-link.active {
+    color: var(--dept-primary);
 }
 
-.site-header--dept .nav-link:hover,
-.site-header--dept .nav-link.active {
-    color: var(--sky-primary);
-}
-
-.site-header--dept .nav-link::after {
-    background: var(--sky-primary);
-    box-shadow: none;
-}
-
-.site-header--dept .menu-toggle span {
-    background: #000000;
+.dept-page .site-header--dept .menu-toggle span {
+    background: var(--text-primary);
 }
 
 .dept-page .dept-nav-links {
@@ -144,11 +137,11 @@ body.dept-page:has(.site-header.scrolled) .dept-sidebar {
     display: flex;
     flex-direction: column;
     padding: 20px 12px 24px;
-    color: var(--text-primary);
-    background: var(--surface);
+    color: var(--text-secondary);
+    background: linear-gradient(180deg, #ffffff 0%, #f0f7ff 60%, #e0f2fe 100%);
+    border-radius: 0 2px 2px 0;
     border-right: 1px solid var(--border);
-    border-radius: 0;
-    box-shadow: 4px 0 24px rgba(15, 76, 129, 0.04);
+    box-shadow: 4px 0 24px rgba(15, 23, 42, 0.06);
     overflow: visible;
     transition: width 0.3s ease, transform 0.3s ease;
 }
@@ -160,19 +153,18 @@ body.dept-page:has(.site-header.scrolled) .dept-sidebar {
     width: 36px;
     height: 36px;
     border-radius: 999px;
-    color: #ffffff;
-    background: var(--dept-accent);
+    color: var(--text-secondary);
+    background: #ffffff;
     border: 1px solid var(--border);
     display: grid;
     place-items: center;
     z-index: 2;
-    box-shadow: 0 4px 12px rgba(15, 76, 129, 0.15);
-    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+    transition: background 0.2s ease;
 }
 
 .dept-sidebar__collapse:hover {
-    background: var(--dept-primary);
-    color: #000000;
+    background: var(--surface-soft);
 }
 
 .dept-sidebar__collapse i {
@@ -224,15 +216,13 @@ body.dept-sidebar-collapsed .dept-sidebar__collapse i {
 }
 
 .dept-sidebar__link:hover {
-    color: var(--dept-accent);
+    color: var(--dept-primary);
     background: var(--dept-light);
-    transform: translateX(2px);
 }
 
 .dept-sidebar__link.active {
-    color: var(--dept-accent);
+    color: var(--dept-primary);
     background: var(--dept-light);
-    border-left: 4px solid var(--dept-primary);
 }
 
 body.dept-sidebar-collapsed .dept-sidebar {
@@ -306,13 +296,13 @@ body.dept-sidebar-collapsed .dept-sidebar__link {
 .dept-page .content-section {
     margin: 0 0 24px;
     padding: 0;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid var(--border);
     border-radius: 16px;
     color: var(--text-secondary);
     background: var(--surface);
     box-shadow:
-        0 4px 6px rgba(15, 23, 42, 0.04),
-        0 20px 48px rgba(15, 23, 42, 0.14);
+        0 4px 6px rgba(15, 23, 42, 0.02),
+        0 16px 36px rgba(15, 23, 42, 0.06);
     scroll-margin-top: 120px;
     overflow: hidden;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
@@ -325,19 +315,48 @@ body.dept-sidebar-collapsed .dept-sidebar__link {
 }
 
 .dept-page .section-header {
-  margin: 0;
-  padding: 22px 28px;
-  background-image: url("../images/departments/bg3.jpg");
-  border-bottom: 3px solid var(--dept-primary);
+    margin: 0;
+    padding: 22px 28px;
+    background: linear-gradient(90deg, #f0f7ff 0%, #e0f2fe 100%);
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
 .dept-page .section-header h1 {
     margin: 0;
-    color: var(--text-on-dark);
+    color: var(--dept-primary);
     font-size: clamp(1.5rem, 3vw, 1.95rem);
     font-weight: 800;
     letter-spacing: 0.02em;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.dept-page .section-header-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    background: var(--dept-primary);
+    color: var(--text-on-dark);
+    border: 1px solid var(--dept-primary);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.dept-page .section-header-link:hover {
+    background: transparent;
+    color: var(--text-on-dark);
+    border-color: var(--text-on-dark);
+    box-shadow: none;
 }
 
 .dept-page .section-body {
@@ -422,28 +441,29 @@ body.dept-sidebar-collapsed .dept-sidebar__link {
     gap: 4px;
     margin-top: 14px;
     padding: 12px 14px;
-    color: var(--text-on-dark);
-    background: linear-gradient(135deg, var(--dept-primary), var(--dept-secondary));
+    color: var(--dept-primary);
+    background: var(--dept-light);
     border-left: 4px solid var(--dept-accent);
     border-radius: 8px;
     font-size: 14px;
     font-weight: 700;
     text-align: center;
-    box-shadow: 0 4px 12px var(--dept-glow);
+    box-shadow: 0 4px 12px rgba(14, 94, 168, 0.06);
 }
 
 .hod-name,
 [class$="/fac-name"] {
     font-size: 16px;
     line-height: 1.2;
-    color: var(--text-on-dark);
+    color: var(--dept-primary);
+    font-weight: 800;
 }
 
 .hod-role,
 [class$="/fac-role"] {
-    color: rgba(248, 250, 252, 0.85);
+    color: var(--text-muted);
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1.3;
 }
 
@@ -608,21 +628,22 @@ body.dept-sidebar-collapsed .dept-sidebar__link {
 }
 
 /* ─── About / Info Cards ─── */
-[data-department="cse"] #about-department.content-section {
-    background: var(--surface);
+.dept-page #about-department.content-section {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(10px);
     border: 1px solid var(--border);
 }
 
-[data-department="cse"] #about-department .section-body.about-content {
+.dept-page #about-department .section-body.about-content {
     display: block;
     column-count: 1;
 }
 
-[data-department="cse"] #about-department .about-content p {
-    color: var(--text-secondary);
+.dept-page #about-department .about-content p {
+    color: black;
     font-size: 1.05rem;
     line-height: 1.8;
-    margin-bottom: 1.2rem;
+    margin-bottom: 20px;
     text-align: justify;
 }
 
@@ -923,12 +944,12 @@ body.dept-sidebar-collapsed .dept-sidebar__link {
 }
 
 .dept-page th {
-  background: linear-gradient(135deg, var(--dept-primary), var(--dept-secondary));
-  color: var(--text-on-dark);
-  font-weight: 700;
-  padding: 14px 18px;
-  text-align: center;
-  border: 1px solid color-mix(in srgb, var(--dept-primary) 60%, transparent);
+    background: var(--dept-primary);
+    color: var(--text-on-dark);
+    font-weight: 700;
+    padding: 14px 18px;
+    text-align: center;
+    border: 1px solid color-mix(in srgb, var(--dept-primary) 60%, transparent);
 }
 
 .dept-page td {
@@ -981,8 +1002,8 @@ body.dept-sidebar-collapsed .dept-sidebar__link {
 }
 
 .dept-page .syllabus-category-card {
-    background-image: url("../images/departments/bg2.jpg");
-    border: 1px solid color-mix(in srgb, var(--dept-primary) 20%, transparent);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-top: 4px solid var(--dept-primary);
     border-radius: 14px;
     padding: 24px;
@@ -1121,6 +1142,89 @@ body.dept-sidebar-collapsed .dept-sidebar__link {
     background-image: url('../images/achievements/teacher.png');
 }
 
+.dept-page .department-achievement-card {
+    background-image: url('../images/achievements/me/dept.jpg');
+}
+
+.dept-page .outcomes-buttons-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.dept-page .outcome-pdf-link-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px 20px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+}
+
+.dept-page .outcome-pdf-link-btn i {
+    font-size: 2.2rem;
+    color: var(--dept-primary);
+    margin-bottom: 14px;
+    transition: transform 0.3s ease;
+}
+
+.dept-page .outcome-pdf-link-btn span {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+
+.dept-page .outcome-pdf-link-btn small {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+.dept-page .outcome-pdf-link-btn:hover {
+    transform: translateY(-5px);
+    background: var(--dept-primary);
+    border-color: var(--dept-primary);
+    box-shadow: 0 12px 32px var(--dept-glow);
+}
+
+.dept-page .outcome-pdf-link-btn:hover i {
+    color: var(--text-on-dark);
+    transform: scale(1.1);
+}
+
+.dept-page .outcome-pdf-link-btn:hover span {
+    color: var(--text-on-dark);
+}
+
+.dept-page .outcome-pdf-link-btn:hover small {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+@media (max-width: 992px) {
+    .dept-page .outcomes-buttons-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .dept-page .outcomes-buttons-container {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
 /* ═══════════════════════════════════════════════════════════════
    Responsive
    ═══════════════════════════════════════════════════════════════ */
@@ -1138,16 +1242,15 @@ body.dept-sidebar-collapsed .dept-sidebar__link {
         padding-top: 16px;
     }
 
-    .dept-page .dept-sidebar-toggle,
-    .dept-coming-soon .dept-sidebar-toggle {
+    .dept-page .dept-sidebar-toggle {
         display: flex;
         flex-direction: column;
         gap: 5px;
         width: 44px;
         height: 44px;
         padding: 10px;
-        background: var(--bg-alt);
-        border: 1px solid var(--border-color);
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 12px;
         justify-content: center;
         align-items: center;
@@ -1155,40 +1258,34 @@ body.dept-sidebar-collapsed .dept-sidebar__link {
         z-index: 1001;
     }
 
-    .dept-page .dept-sidebar-toggle span,
-    .dept-coming-soon .dept-sidebar-toggle span {
+    .dept-page .dept-sidebar-toggle span {
         display: block;
         width: 24px;
         height: 2px;
-        background-color: var(--secondary-deep) !important;
+        background-color: #ffffff !important;
         margin: 0 !important;
         border-radius: 2px;
         transition: all 0.3s ease;
     }
 
-    .dept-page .dept-sidebar-toggle.open span:nth-child(1),
-    .dept-coming-soon .dept-sidebar-toggle.open span:nth-child(1) {
+    .dept-page .dept-sidebar-toggle.open span:nth-child(1) {
         transform: translateY(7px) rotate(45deg);
     }
 
-    .dept-page .dept-sidebar-toggle.open span:nth-child(2),
-    .dept-coming-soon .dept-sidebar-toggle.open span:nth-child(2) {
+    .dept-page .dept-sidebar-toggle.open span:nth-child(2) {
         opacity: 0;
     }
 
-    .dept-page .dept-sidebar-toggle.open span:nth-child(3),
-    .dept-coming-soon .dept-sidebar-toggle.open span:nth-child(3) {
+    .dept-page .dept-sidebar-toggle.open span:nth-child(3) {
         transform: translateY(-7px) rotate(-45deg);
     }
 
-    .dept-page .dept-nav-links,
-    .dept-coming-soon .dept-nav-links {
+    .dept-page .dept-nav-links {
         display: none;
     }
 
     /* Fix for mobile menu toggle on department pages */
-    .dept-page .dept-nav-links.open,
-    .dept-coming-soon .dept-nav-links.open {
+    .dept-page .dept-nav-links.open {
         display: grid !important;
         position: fixed;
         top: 104px;
@@ -1204,20 +1301,7 @@ body.dept-sidebar-collapsed .dept-sidebar__link {
         overflow-y: auto;
     }
 
-    .dept-page .dept-nav-links .nav-link,
-    .dept-coming-soon .dept-nav-links .nav-link {
-        color: #ffffff !important;
-    }
-
-    .dept-page .dept-nav-links .nav-link:hover,
-    .dept-page .dept-nav-links .nav-link.active,
-    .dept-coming-soon .dept-nav-links .nav-link:hover,
-    .dept-coming-soon .dept-nav-links .nav-link.active {
-        color: var(--sky-primary) !important;
-    }
-
-    .dept-page .site-header--dept .navbar,
-    .dept-coming-soon .site-header--dept .navbar {
+    .dept-page .site-header--dept .navbar {
         grid-template-columns: auto auto;
     }
 

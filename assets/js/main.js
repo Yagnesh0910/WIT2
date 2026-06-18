@@ -15,7 +15,8 @@ const departmentPages = {
   ce: "ce.html",
   entc: "entc.html",
   ecs: "ecs.html",
-  aiml: "aiml.html"
+  aiml: "aiml.html",
+  ge: "ge.html"
 };
 
 const pathPrefix = window.location.pathname.includes("/pages/") ? "" : "pages/";
@@ -27,7 +28,8 @@ const branchTitles = {
   ce: "Civil Engineering",
   entc: "Electronics & Telecommunication",
   ecs: "Electronics & Computer Engineering",
-  aiml: "Artificial Intelligence & Machine Learning"
+  aiml: "Artificial Intelligence & Machine Learning",
+  ge: "General Engineering"
 };
 
 const departmentSectionGroups = [
@@ -48,15 +50,27 @@ const menus = {
     label: "About",
     headline: "Institute identity, governance, values, reports, and public information.",
     groups: [
-      ["Institute", ["Institute Information", "Management", "Vision & Mission", "Goals & Quality", "Core Values", "Governing Body", "Policies"]],
-      ["Leadership & Reports", ["Secretary Desk", "Organization Chart", "Institute Development Plan", "Annual Reports", "Mandatory Disclosure", "RTI"]]
+      ["Institute", [
+        ["Institute Information", "assets/documents/about_institute/Institute-Information.pdf"],
+        ["Management", "pages/management.html"],
+        ["Vision & Mission", "pages/vision-mission.html"],
+        ["Goals & Quality", "pages/goals-quality.html"],
+        ["Core Values", "pages/core-values.html"],
+        ["Governing Body", "pages/governing-body.html"],
+        ["Policies", "pages/policies.html"]
+      ]],
+      ["Leadership & Reports", [
+        ["Secretary Desk", "pages/secretary-desk.html"],
+        ["Principal Desk", "pages/principal-desk.html"],
+        "Organization Chart", "Institute Development Plan", "Annual Reports", "Mandatory Disclosure", "RTI"
+      ]]
     ]
   },
   academics: {
     label: "Academics",
     headline: "Departments, programmes, academic resources, accreditation, and innovation.",
     groups: [
-      ["Academic Links", ["Departments", "Academic Calendar", "Examination", "E-Learning", "Programmes Offered", "Accreditation", "Best Practices", "Innovation & IPR"]],
+      ["Academic Links", ["Departments", ["Academic Calendar", "pages/academic-calendar.html"], "Examination", "E-Learning", "Programmes Offered", "Accreditation", "Best Practices", "Innovation & IPR"]],
       ["Departments", [
         ["Computer Science & Engineering", "cse"],
         ["Information Technology", "it"],
@@ -64,7 +78,8 @@ const menus = {
         ["Civil Engineering", "ce"],
         ["Electronics & Telecommunication", "entc"],
         ["Artificial Intelligence & Machine Learning", "aiml"],
-        ["Electronics & Computer Engineering", "ecs"]
+        ["Electronics & Computer Engineering", "ecs"],
+        ["General Engineering", "ge"]
       ]]
     ]
   },
@@ -135,13 +150,22 @@ function createMenuLinks(items) {
       } else if (departmentPages[link]) {
         href = `${pathPrefix}${departmentPages[link]}`;
       } else {
-        href = link;
+        if (!link.startsWith("http") && !link.startsWith("/") && window.location.pathname.includes("/pages/")) {
+          if (link.startsWith("pages/")) {
+            href = link.substring(6);
+          } else {
+            href = `../${link}`;
+          }
+        } else {
+          href = link;
+        }
       }
     } else {
       label = item;
     }
 
-    return `<a href="${href}">${label}</a>`;
+    const targetAttr = href.endsWith(".pdf") ? ' target="_blank" rel="noopener"' : '';
+    return `<a href="${href}"${targetAttr}>${label}</a>`;
   }).join("");
 }
 
