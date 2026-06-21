@@ -2382,6 +2382,9 @@ body.modal-open {
     background: rgba(2, 8, 23, 0.94);
     box-shadow: var(--shadow);
     backdrop-filter: blur(24px);
+    justify-content: stretch;
+    align-items: stretch;
+    gap: 8px;
   }
 
   .site-header.scrolled .nav-list {

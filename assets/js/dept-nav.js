@@ -30,7 +30,18 @@ function ensureFontAwesome() {
 }
 
 function buildSidebarMarkup(title) {
-  const links = DEPT_NAV_LINKS.map((item) => `
+  const dept = document.body.dataset.department;
+  let linksList = [...DEPT_NAV_LINKS];
+  if (dept === "ge") {
+    linksList = linksList.filter((item) => item.section !== "co-po-pso");
+  }
+  if (dept === "it" || dept === "ce") {
+    linksList.push({ label: "Student Activity", emoji: "🏃", section: "student-activity" });
+  }
+  if (dept === "entc" || dept === "ecs" || dept === "ge") {
+    linksList.push({ label: "Activities", emoji: "🏃", section: "activities" });
+  }
+  const links = linksList.map((item) => `
     <a href="#${item.section}" class="dept-sidebar__link sidebar-link" data-section="${item.section}">
       <span class="dept-sidebar__emoji" aria-hidden="true">${item.emoji}</span>
       <span class="dept-sidebar__label">${item.label}</span>
@@ -166,3 +177,96 @@ outcomeTabs.forEach((tab) => {
 });
 
 initDepartmentSidebar();
+
+// Dynamic Read More / Show More functionality for HOD Desk and About Department
+function initReadMoreSupport() {
+  const targets = document.querySelectorAll(".hod-message, .about-content");
+  targets.forEach((target) => {
+    if (target.querySelector(".read-more-wrapper")) return;
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "read-more-wrapper";
+
+    while (target.firstChild) {
+      wrapper.appendChild(target.firstChild);
+    }
+    target.appendChild(wrapper);
+
+    // Add a short delay to ensure browser layout computation is complete
+    setTimeout(() => {
+      const thresholdHeight = 160; // 5 lines limit (~140px) + some buffer
+      if (wrapper.scrollHeight > thresholdHeight) {
+        const btn = document.createElement("button");
+        btn.className = "read-more-btn";
+        btn.setAttribute("type", "button");
+        btn.innerHTML = 'Read More <i class="fa-solid fa-chevron-right"></i>';
+
+        btn.addEventListener("click", () => {
+          const isExpanded = wrapper.classList.contains("expanded");
+
+          if (!isExpanded) {
+            // Expand
+            const startHeight = wrapper.offsetHeight;
+            const endHeight = wrapper.scrollHeight;
+
+            wrapper.style.maxHeight = startHeight + "px";
+            wrapper.offsetHeight; // Force layout reflow
+
+            wrapper.classList.add("expanded");
+            wrapper.style.maxHeight = endHeight + "px";
+
+            // Update button label
+            btn.innerHTML = 'Read Less <i class="fa-solid fa-chevron-up"></i>';
+
+            // Clean up inline styles once transition is done
+            wrapper.addEventListener("transitionend", function handler(e) {
+              if (e.propertyName === "max-height" && wrapper.classList.contains("expanded")) {
+                wrapper.style.maxHeight = "";
+                wrapper.removeEventListener("transitionend", handler);
+              }
+            });
+          } else {
+            // Collapse
+            const startHeight = wrapper.scrollHeight;
+            const endHeight = 140; // The truncated limit in CSS
+
+            wrapper.style.maxHeight = startHeight + "px";
+            wrapper.offsetHeight; // Force layout reflow
+
+            wrapper.classList.remove("expanded");
+            wrapper.style.maxHeight = endHeight + "px";
+
+            // Update button label
+            btn.innerHTML = 'Read More <i class="fa-solid fa-chevron-right"></i>';
+
+            // Clean up inline styles once transition is done
+            wrapper.addEventListener("transitionend", function handler(e) {
+              if (e.propertyName === "max-height" && !wrapper.classList.contains("expanded")) {
+                wrapper.style.maxHeight = "";
+                wrapper.removeEventListener("transitionend", handler);
+              }
+            });
+
+            // Smooth scroll target into view if the top goes offscreen
+            const rect = target.getBoundingClientRect();
+            if (rect.top < 0) {
+              target.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            }
+          }
+        });
+
+        target.appendChild(btn);
+      } else {
+        wrapper.classList.add("expanded");
+      }
+    }, 50);
+  });
+}
+
+// Initialize Read More support when DOM is parsed
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initReadMoreSupport);
+} else {
+  initReadMoreSupport();
+}
+

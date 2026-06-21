@@ -9,17 +9,25 @@ const announcementClose = document.querySelector("#announcementClose");
 const announcementBackdrop = document.querySelector("#announcementBackdrop");
 
 const departmentPages = {
-  cse: "cse.html",
-  it: "it.html",
-  me: "me.html",
-  ce: "ce.html",
-  entc: "entc.html",
-  ecs: "ecs.html",
-  aiml: "aiml.html",
-  ge: "ge.html"
+  cse: "pages/departments/cse.html",
+  it: "pages/departments/it.html",
+  me: "pages/departments/me.html",
+  ce: "pages/departments/ce.html",
+  entc: "pages/departments/entc.html",
+  ecs: "pages/departments/ecs.html",
+  aiml: "pages/departments/aiml.html",
+  ge: "pages/departments/ge.html"
 };
 
-const pathPrefix = window.location.pathname.includes("/pages/") ? "" : "pages/";
+// Dynamically calculate the relative path to the root directory
+let rootPrefix = "";
+const pathname = window.location.pathname;
+if (pathname.includes("/pages/")) {
+  const pagesIndex = pathname.indexOf("/pages/");
+  const afterPages = pathname.substring(pagesIndex + 7);
+  const depth = (afterPages.match(/\//g) || []).length;
+  rootPrefix = "../" + "../".repeat(depth);
+}
 
 const branchTitles = {
   cse: "Computer Science & Engineering",
@@ -50,11 +58,11 @@ const examinationGroup = [
     ["WIT Exam rule book", "assets/documents/academics/examination/WIT-Exam-Rule-Book-18-5-26-for-web-site.pdf"],
     ["Discontinuation of carry on scheme", "assets/documents/academics/examination/Carry-on-Schem-Notice.pdf"],
     ["Implementation of Re-examination", "assets/documents/academics/examination/Condut-of-Reexamination-Notice.pdf"],
-    ["2025-26(May-2026)", "pages/timetable.html?session=2025-26(May-2026)"],
-    ["2025-26(Nov-2025)", "pages/timetable.html?session=2025-26(Nov-2025)"],
-    ["2024-25(May-2025)", "pages/timetable.html?session=2024-25(May-2025)"],
-    ["2024-25(Nov-2024)", "pages/timetable.html?session=2024-25(Nov-2024)"],
-    ["2023-24", "pages/timetable.html?session=2023-24"]
+    ["2025-26(May-2026)", "pages/academics/timetable.html?session=2025-26(May-2026)"],
+    ["2025-26(Nov-2025)", "pages/academics/timetable.html?session=2025-26(Nov-2025)"],
+    ["2024-25(May-2025)", "pages/academics/timetable.html?session=2024-25(May-2025)"],
+    ["2024-25(Nov-2024)", "pages/academics/timetable.html?session=2024-25(Nov-2024)"],
+    ["2023-24", "pages/academics/timetable.html?session=2023-24"]
   ]
 ];
 
@@ -62,17 +70,35 @@ const elearningGroup = [
   "E-Learning", [
     ["NPTEL WIT LOCAL CHAPTER", "https://nptel.ac.in/localchapter/statistics/863"],
     ["Professional Learning Community (Video PEER Review Form)", "https://docs.google.com/forms/d/e/1FAIpQLSeSjlrlk41gIwH8m2YsW3gv5FrLXVd_K8bOmutfRWsVGXsBHA/viewform"],
-    ["LMS", "pages/lms.html"]
+    ["LMS", "pages/academics/lms.html"]
   ]
 ];
 
 const accreditationGroup = [
   "Accreditation", [
-    ["IQAC", "pages/iqac.html"],
-    ["NAAC", "pages/naac.html"],
-    ["NBA", "pages/nba.html"],
-    ["NIRF", "pages/nirf.html"],
-    ["ARIIA", "pages/ariia.html"]
+    ["IQAC", "pages/accreditation/iqac.html"],
+    ["NAAC", "pages/accreditation/naac.html"],
+    ["NBA", "pages/accreditation/nba.html"],
+    ["NIRF", "pages/accreditation/nirf.html"],
+    ["ARIIA", "pages/accreditation/ariia.html"]
+  ]
+];
+
+const bestpracticesGroup = [
+  "Best Practices", [
+    ["FACULTY E COURSE BOOK", "assets/documents/academics/best_practices/Faculty-e-Course-Book.pdf"],
+    ["PLC", "assets/documents/academics/best_practices/PLC.pdf"],
+    ["STUDENT ADMISSION PROCESS", "assets/documents/academics/best_practices/Student-Admission-Process.pdf"],
+    ["INNOVATIONS IN TEACHING LEARNING", "assets/documents/academics/best_practices/Innovations-in-Teaching-Learning.pdf"],
+    ["INCULCATING LIFE LONG LEARNING", "assets/documents/academics/best_practices/Inculcating-Life-Long-Learning.pdf"]
+  ]
+];
+
+const innovationIprGroup = [
+  "Innovation Entrepreneurship and IPR", [
+    ["Committee for Implementation of Innovation and Start Up Policy", "assets/documents/academics/innovation_entrepreneurship_and_ipr/Innovation-and-startup-policy-implementation-team.pdf"],
+    ["NISP Guiding Framework by AICTE", "assets/documents/academics/innovation_entrepreneurship_and_ipr/NISP-2019-Guiding-Framework-By-AICTE.pdf"],
+    ["WIT Innovation and Start Up Policy 2021", "assets/documents/academics/innovation_entrepreneurship_and_ipr/WIT-Innovation-Startup-Policy.pdf"]
   ]
 ];
 
@@ -83,19 +109,19 @@ const menus = {
     groups: [
       ["Institute", [
         ["Institute Information", "assets/documents/about_institute/Institute-Information.pdf"],
-        ["Management", "pages/management.html"],
-        ["Vision & Mission", "pages/vision-mission.html"],
-        ["Goals & Quality", "pages/goals-quality.html"],
-        ["Core Values", "pages/core-values.html"],
-        ["Governing Body", "pages/governing-body.html"],
-        ["Policies", "pages/policies.html"]
+        ["Management", "pages/about/management.html"],
+        ["Vision & Mission", "pages/about/vision-mission.html"],
+        ["Goals & Quality", "pages/about/goals-quality.html"],
+        ["Core Values", "pages/about/core-values.html"],
+        ["Governing Body", "pages/about/governing-body.html"],
+        ["Policies", "pages/about/policies.html"]
       ]],
       ["Leadership & Reports", [
-        ["Secretary Desk", "pages/secretary-desk.html"],
-        ["Principal Desk", "pages/principal-desk.html"],
+        ["Secretary Desk", "pages/about/secretary-desk.html"],
+        ["Principal Desk", "pages/about/principal-desk.html"],
         ["Organization Chart", "assets/documents/about_institute/Organization-Structure-of-WIT.pdf"],
         ["Institute Development Plan", "assets/documents/about_institute/Institute Development Plan.pdf"],
-        ["Annual Reports", "pages/annual-reports.html"],
+        ["Annual Reports", "pages/about/annual-reports.html"],
         ["Mandatory Disclosure", "assets/documents/about_institute/Mandatory-Disclosure_May-2025.pdf"],
         ["RTI", "assets/documents/about_institute/RTI.pdf"]
       ]]
@@ -107,13 +133,13 @@ const menus = {
     groups: [
       ["Academic Links", [
         ["Departments", "#academics-departments"],
-        ["Academic Calendar", "pages/academic-calendar.html"],
+        ["Academic Calendar", "pages/academics/academic-calendar.html"],
         ["Examination", "#academics-examination"],
         ["E-Learning", "#academics-elearning"],
         "Programmes Offered",
         ["Accreditation", "#academics-accreditation"],
-        "Best Practices",
-        "Innovation & IPR"
+        ["Best Practices", "#academics-bestpractices"],
+        ["Innovation Entrepreneurship and IPR", "#academics-innovation-ipr"]
       ]],
       ["Departments", [
         ["Computer Science & Engineering", "cse"],
@@ -131,8 +157,21 @@ const menus = {
     label: "Admissions",
     headline: "Admission routes, eligibility, scholarships, hostel, fees, and course codes.",
     groups: [
-      ["Admission Process", ["First Year Admission", "Direct Second Year Admission", "M.Tech Admission", "SY to Final Year Admission", "Eligibility & Admission Process", "Scholarships"]],
-      ["Fees & Support", ["Hostel", "Fee Structure", "Fee Proposal", "Course Codes", "Fee Payment Guidelines"]]
+      ["Admission Process", [
+        ["First Year Admission", "pages/admissions/first-year.html"],
+        ["Direct Second Year Admission", "pages/admissions/dsy.html"],
+        ["M.Tech Admission", "pages/admissions/mtech.html"],
+        ["SY to Final Year Admission", "assets/documents/admissions/SY-to-Final-Year-Admission-Notice-2024-25.pdf"],
+        ["Eligibility & Admission Process", "https://cetcell.mahacet.org/CET_landing_page_2023/"],
+        ["Scholarships", "pages/admissions/scholarships.html"]
+      ]],
+      ["Fees & Support", [
+        ["Hostel", "pages/admissions/hostel.html"],
+        ["Fee Structure", "pages/admissions/fee-structure.html"],
+        ["Fee Proposal", "pages/admissions/fee-proposal.html"],
+        ["WIT Option Form Filling Course Codes", "assets/documents/admissions/wit_option_form_course_codes.jpg"],
+        ["Fee Payment Guidelines", "assets/documents/admissions/guideline_onlinefeepayment_sbcollect.pdf"]
+      ]]
     ]
   },
   research: {
@@ -140,16 +179,16 @@ const menus = {
     headline: "Research, innovation, quality assurance, rankings, approvals, and proceedings.",
     groups: [
       ["Research Ecosystem", [
-        "Research Overview", 
-        "Innovation Entrepreneurship & IPR", 
-        ["IQAC", "pages/iqac.html"], 
-        ["NAAC", "pages/naac.html"], 
-        ["NBA", "pages/nba.html"]
+        ["Research Overview", "pages/research.html"], 
+        ["Innovation Entrepreneurship and IPR", "pages/innovation-ipr.html"], 
+        ["IQAC", "pages/accreditation/iqac.html"], 
+        ["NAAC", "pages/accreditation/naac.html"], 
+        ["NBA", "pages/accreditation/nba.html"]
       ]],
       ["Approvals & Rankings", [
-        ["NIRF", "pages/nirf.html"], 
-        ["ARIIA", "pages/ariia.html"], 
-        "AICTE Approvals", 
+        ["NIRF", "pages/accreditation/nirf.html"], 
+        ["ARIIA", "pages/accreditation/ariia.html"], 
+        ["AICTE Approvals", "assets/documents/AICTE-Approval-Letters.pdf"], 
         "Conference Proceedings"
       ]]
     ]
@@ -158,8 +197,12 @@ const menus = {
     label: "Campus Life",
     headline: "Events, clubs, placements, alumni, WITchar, e-store, and career opportunities.",
     groups: [
-      ["Life at WIT", ["Events", "Training & Placements", "Alumni", "WITchar 2k26", "WIT E-Store", "Career"]],
-      ["Clubs", ["Art Club", "Google Developers Group", "LOL Coding Club"]]
+      ["Life at WIT", [["Events", "pages/gallery.html"], ["Training & Placements", "pages/placement.html"], "Alumni", "WITchar 2k26", ["WIT E-Store", "https://www.printvenue.com/collections/cs-wit"], ["Career", "pages/career.html"]]],
+      ["Clubs", [
+        ["Art Club", "pages/art-club.html"],
+        ["Google Developers Group", "https://gdg.community.dev/gdg-on-campus-walchand-institute-of-technology-solapur-india/"],
+        ["LOL Coding Club", "https://lolclubwit.web.app/"]
+      ]]
     ]
   },
   examination: {
@@ -178,7 +221,7 @@ const menus = {
     label: "Contact",
     headline: "Contact, grievance, tenders, important links, and scholarship schemes.",
     groups: [
-      ["Connect", ["Contact Us", "Online Grievance", "Tenders", "Important Links", "AICTE Scholarship Schemes"]]
+      ["Connect", [["Contact Us", "pages/contact.html"], ["Online Grievance", "https://docs.google.com/forms/d/e/1FAIpQLSea-zVWwqoxxh4sZrd67AK0Umcwk68JSsDWXnsUkXjeUVPPEQ/viewform"], ["Tenders", "pages/tenders.html"], "Important Links", ["AICTE Scholarship Schemes", "https://www.aicte.gov.in/schemes/students-development-schemes"]]]
     ]
   }
 };
@@ -208,14 +251,10 @@ function createMenuLinks(items) {
       if (link.startsWith("#")) {
         href = link;
       } else if (departmentPages[link]) {
-        href = `${pathPrefix}${departmentPages[link]}`;
+        href = rootPrefix + departmentPages[link];
       } else {
-        if (!link.startsWith("http") && !link.startsWith("/") && window.location.pathname.includes("/pages/")) {
-          if (link.startsWith("pages/")) {
-            href = link.substring(6);
-          } else {
-            href = `../${link}`;
-          }
+        if (!link.startsWith("http") && !link.startsWith("https") && !link.startsWith("mailto:") && !link.startsWith("/")) {
+          href = rootPrefix + link;
         } else {
           href = link;
         }
@@ -277,7 +316,7 @@ function buildMobilePanels() {
       // Create specific layout for Academics on mobile
       const academicLinks = menu.groups[0][1].filter(item => {
         const label = Array.isArray(item) ? item[0] : item;
-        return label !== "Departments" && label !== "Examination" && label !== "E-Learning" && label !== "Accreditation";
+        return label !== "Departments" && label !== "Examination" && label !== "E-Learning" && label !== "Accreditation" && label !== "Best Practices" && label !== "Innovation Entrepreneurship and IPR";
       });
 
       // Add Academic Links
@@ -312,6 +351,22 @@ function buildMobilePanels() {
       panel.insertAdjacentHTML("beforeend", `
         <div id="mobile-academics-accreditation" class="mobile-sub-panel" style="display: none;">
           ${createMenuLinks(accreditationGroup[1])}
+        </div>
+      `);
+
+      // Add Best Practices toggle and its sub-panel
+      panel.insertAdjacentHTML("beforeend", `<a href="#mobile-academics-bestpractices" class="mobile-subtab-trigger">Best Practices</a>`);
+      panel.insertAdjacentHTML("beforeend", `
+        <div id="mobile-academics-bestpractices" class="mobile-sub-panel" style="display: none;">
+          ${createMenuLinks(bestpracticesGroup[1])}
+        </div>
+      `);
+
+      // Add Innovation Entrepreneurship and IPR toggle and its sub-panel
+      panel.insertAdjacentHTML("beforeend", `<a href="#mobile-academics-innovation-ipr" class="mobile-subtab-trigger">Innovation Entrepreneurship and IPR</a>`);
+      panel.insertAdjacentHTML("beforeend", `
+        <div id="mobile-academics-innovation-ipr" class="mobile-sub-panel" style="display: none;">
+          ${createMenuLinks(innovationIprGroup[1])}
         </div>
       `);
     } else {
@@ -480,6 +535,69 @@ document.querySelectorAll(".menu-trigger").forEach((trigger) => {
   });
 });
 
+function switchAcademicsSubtab(href, link) {
+  if (link.classList.contains("subtab-active")) return;
+
+  // Toggle active styling on left links
+  const parentList = link.closest(".mega-group");
+  if (parentList) {
+    parentList.querySelectorAll("a").forEach(a => a.classList.remove("subtab-active"));
+    link.classList.add("subtab-active");
+  }
+
+  // Update right column content
+  const megaGroups = document.querySelector(".mega-groups");
+  if (megaGroups) {
+    const rightGroup = megaGroups.children[1];
+    if (rightGroup) {
+      if (href === "#academics-departments") {
+        rightGroup.innerHTML = `
+          <h4>Departments</h4>
+          ${createMenuLinks(menus.academics.groups[1][1])}
+        `;
+      } else if (href === "#academics-examination") {
+        rightGroup.innerHTML = `
+          <h4>Examination</h4>
+          ${createMenuLinks(examinationGroup[1])}
+        `;
+      } else if (href === "#academics-elearning") {
+        rightGroup.innerHTML = `
+          <h4>E-Learning</h4>
+          ${createMenuLinks(elearningGroup[1])}
+        `;
+      } else if (href === "#academics-accreditation") {
+        rightGroup.innerHTML = `
+          <h4>Accreditation</h4>
+          ${createMenuLinks(accreditationGroup[1])}
+        `;
+      } else if (href === "#academics-bestpractices") {
+        rightGroup.innerHTML = `
+          <h4>Best Practices</h4>
+          ${createMenuLinks(bestpracticesGroup[1])}
+        `;
+      } else if (href === "#academics-innovation-ipr") {
+        rightGroup.innerHTML = `
+          <h4>Innovation Entrepreneurship and IPR</h4>
+          ${createMenuLinks(innovationIprGroup[1])}
+        `;
+      }
+    }
+  }
+}
+
+// Hover support for desktop Academics mega menu subtabs
+document.addEventListener("mouseover", (event) => {
+  if (window.matchMedia("(max-width: 1160px)").matches) return;
+
+  const link = event.target.closest("a");
+  if (link) {
+    const href = link.getAttribute("href");
+    if (href && href.startsWith("#academics-")) {
+      switchAcademicsSubtab(href, link);
+    }
+  }
+});
+
 document.addEventListener("click", (event) => {
   const link = event.target.closest("a");
 
@@ -487,44 +605,9 @@ document.addEventListener("click", (event) => {
     const href = link.getAttribute("href");
 
     // 1. Desktop subtabs toggle in Academics
-    if (href === "#academics-departments" || href === "#academics-examination" || href === "#academics-elearning" || href === "#academics-accreditation") {
+    if (href && href.startsWith("#academics-")) {
       event.preventDefault();
-
-      // Toggle active styling on left links
-      const parentList = link.closest(".mega-group");
-      if (parentList) {
-        parentList.querySelectorAll("a").forEach(a => a.classList.remove("subtab-active"));
-        link.classList.add("subtab-active");
-      }
-
-      // Update right column content
-      const megaGroups = document.querySelector(".mega-groups");
-      if (megaGroups) {
-        const rightGroup = megaGroups.children[1];
-        if (rightGroup) {
-          if (href === "#academics-departments") {
-            rightGroup.innerHTML = `
-              <h4>Departments</h4>
-              ${createMenuLinks(menus.academics.groups[1][1])}
-            `;
-          } else if (href === "#academics-examination") {
-            rightGroup.innerHTML = `
-              <h4>Examination</h4>
-              ${createMenuLinks(examinationGroup[1])}
-            `;
-          } else if (href === "#academics-elearning") {
-            rightGroup.innerHTML = `
-              <h4>E-Learning</h4>
-              ${createMenuLinks(elearningGroup[1])}
-            `;
-          } else if (href === "#academics-accreditation") {
-            rightGroup.innerHTML = `
-              <h4>Accreditation</h4>
-              ${createMenuLinks(accreditationGroup[1])}
-            `;
-          }
-        }
-      }
+      switchAcademicsSubtab(href, link);
       return;
     }
 
